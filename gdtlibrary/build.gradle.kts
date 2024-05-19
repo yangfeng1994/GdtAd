@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    id("maven-publish")
 }
 group = "com.github.yangfeng1994"
 version = "1.0.0"
