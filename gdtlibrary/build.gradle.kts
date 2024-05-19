@@ -42,15 +42,15 @@ android {
     }
 }
 
-//publishing {
-//    publications {
-//        create<MavenPublication>("maven") {
-//            groupId = "com.mantu.gdtAd"
-//            artifactId = "gdtAd"
-//            version = "1.0.4"
-//        }
-//    }
-//}
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "com.mantu.gdtAd"
+            artifactId = "gdtAd"
+            version = "1.0.5"
+        }
+    }
+}
 
 dependencies {
     implementation("com.makeramen:roundedimageview:2.3.0")
