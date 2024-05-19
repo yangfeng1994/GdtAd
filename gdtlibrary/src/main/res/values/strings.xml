@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_app_details">应用详情</string>
+    <string name="app_download_now">立即下载</string>
+    <string name="app_reload">重新加载</string>
+</resources>
