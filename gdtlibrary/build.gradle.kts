@@ -2,10 +2,10 @@
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
-    id("maven-publish")
+    id("maven")
 }
 group = "com.github.yangfeng1994"
-version = "1.0.0"
+//version = "1.0.0"
 
 android {
     namespace = "com.mantu.gdt.ad"
@@ -41,6 +41,16 @@ android {
         enable = true
     }
 }
+
+//publishing {
+//    publications {
+//        create<MavenPublication>("maven") {
+//            groupId = "com.mantu.gdtAd"
+//            artifactId = "gdtAd"
+//            version = "1.0.3"
+//        }
+//    }
+//}
 
 dependencies {
     implementation("com.makeramen:roundedimageview:2.3.0")
