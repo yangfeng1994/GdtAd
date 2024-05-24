@@ -40,7 +40,7 @@ public class QYWebChromeClient extends WebChromeClient {
 	public void onReceivedTitle(WebView view, String title) {
 		sLogger.infoLog("onReceivedTitle:" + title + ":" + view.getUrl());
 		super.onReceivedTitle(view, title);
-		QYWebView qyView = (QYWebView) view;
+//		QYWebView qyView = (QYWebView) view;
 //		if (!TextUtils.isEmpty(qyView.mModeJS)) {
 //			qyView.loadUrl(qyView.mModeJS);
 //		}

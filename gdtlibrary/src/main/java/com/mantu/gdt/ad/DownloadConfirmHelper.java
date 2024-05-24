@@ -36,6 +36,9 @@ public class DownloadConfirmHelper {
     private static final String UPDATE_TIME_KEY = "apkPublishTime";//版本更新时间
     private static final String APK_FILE_SIZE_KEY = "fileSize";//apk文件大小，bytes
 
+    private static final String DESCRIPTION_URL_KEY = "descriptionUrl";//功能介绍
+    private static final String ICP_NUMBER_KEY = "icpNumber";//icp备案号
+    private static final String SUITABLE_AGE_KEY = "suitableAge";//适用年龄
     private static boolean USE_RAW_PERMISSIONS = false;
     private static JSONObject PERMISSIONS_MAP_JSON;
 
@@ -48,6 +51,10 @@ public class DownloadConfirmHelper {
         public String privacyAgreementUrl;
         public long apkPublishTime;
         public long fileSize;
+        public String icpNumber;
+
+        public String descriptionUrl;
+        public String suitableAge;
     }
 
     public static final DownloadConfirmListener DOWNLOAD_CONFIRM_LISTENER = (context, scenes, infoUrl, callBack) -> {
@@ -56,10 +63,10 @@ public class DownloadConfirmHelper {
         //获取对应的json数据并自定义显示
         DownloadApkConfirmDialog dialog = new DownloadApkConfirmDialog(context, getApkJsonInfoUrl(infoUrl), callBack);
         //DownloadApkConfirmDialogWebView dialog = new DownloadApkConfirmDialogWebView(context, infoUrl, callBack);//使用webview显示
-        if((scenes & ApkDownloadComplianceInterface.INSTALL_BITS) != 0){
+        if ((scenes & ApkDownloadComplianceInterface.INSTALL_BITS) != 0) {
             dialog.setInstallTip();
             scenes &= ~ApkDownloadComplianceInterface.INSTALL_BITS;
-            Log.d(TAG, "real scenes:" + scenes );
+            Log.d(TAG, "real scenes:" + scenes);
         }
         dialog.show();
     };
@@ -120,6 +127,9 @@ public class DownloadConfirmHelper {
                 long publicTime = dataJson.optLong(UPDATE_TIME_KEY);
                 result.apkPublishTime = publicTime > 946688401000L ? publicTime : publicTime * 1000;
                 result.fileSize = dataJson.optLong(APK_FILE_SIZE_KEY);//单位是字节
+                result.descriptionUrl = dataJson.optString(DESCRIPTION_URL_KEY);
+                result.icpNumber = dataJson.optString(ICP_NUMBER_KEY);
+                result.suitableAge = dataJson.optString(SUITABLE_AGE_KEY);
             }
         } catch (JSONException e) {
             e.printStackTrace();

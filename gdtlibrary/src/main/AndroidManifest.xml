@@ -8,6 +8,9 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />    <!-- 必要权限，权限会用在下载类广告安装应用时使用 -->
 
     <application android:usesCleartextTraffic="true">
+        <activity
+            android:name=".WebActivity"
+            android:screenOrientation="portrait" />
         <provider
             android:name="com.qq.e.comm.GDTFileProvider"
             android:authorities="${applicationId}.gdt.fileprovider"

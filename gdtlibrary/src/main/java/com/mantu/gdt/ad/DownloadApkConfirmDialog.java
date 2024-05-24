@@ -23,7 +23,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.makeramen.roundedimageview.RoundedImageView;
 import com.qq.e.comm.compliance.DownloadConfirmCallBack;
 
 import java.text.DecimalFormat;
@@ -39,7 +38,7 @@ public class DownloadApkConfirmDialog extends Dialog implements View.OnClickList
     private Context context;
     private int orientation;
     private DownloadConfirmCallBack callBack;
-    private TextView mTVTitle, mTVDesc, mTVVersion, mTVSize, mTVUpdate, mTVPrivate, mTVContent;
+    private TextView mTVTitle, mTVDesc, mTVVersion, mTVSize, mTVUpdate, mTVPrivate, mTVContent, mTVAppDesc;
     private ImageView close;
     private Button confirm;
 
@@ -51,7 +50,7 @@ public class DownloadApkConfirmDialog extends Dialog implements View.OnClickList
 
     private static final String RELOAD_TEXT = "重新加载";
     private static final String LOAD_ERROR_TEXT = "抱歉，应用信息获取失败";
-    private RoundedImageView mRIVIcon;
+    private ImageView mRIVIcon;
 
     public DownloadApkConfirmDialog(Context context, String infoUrl,
                                     DownloadConfirmCallBack callBack) {
@@ -66,7 +65,7 @@ public class DownloadApkConfirmDialog extends Dialog implements View.OnClickList
     }
 
     private void initView() {
-        setContentView(R.layout.download_confirm_dialog_1);
+        setContentView(R.layout.gdt_download_confirm_dialog);
         View root = findViewById(R.id.download_confirm_root);
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             root.setBackgroundResource(R.drawable.download_confirm_background_portrait);
@@ -88,6 +87,7 @@ public class DownloadApkConfirmDialog extends Dialog implements View.OnClickList
         mTVSize = findViewById(R.id.mTVSize);
         mTVUpdate = findViewById(R.id.mTVUpdate);
         mTVPrivate = findViewById(R.id.mTVPrivate);
+        mTVAppDesc = findViewById(R.id.mTVAppDesc);
         mTVContent = findViewById(R.id.mTVContent);
         mTVPrivate.setOnClickListener(v -> {
             String url = (String) v.getTag();
@@ -100,6 +100,18 @@ public class DownloadApkConfirmDialog extends Dialog implements View.OnClickList
         paint.setFlags(Paint.UNDERLINE_TEXT_FLAG);  //下划线
         paint.isAntiAlias();
         paint.setAntiAlias(true);  //抗锯齿
+
+        mTVAppDesc.setOnClickListener(v -> {
+            String url = (String) v.getTag();
+            Intent intent = new Intent(context, WebActivity.class);
+            intent.putExtra("url", url);
+            intent.putExtra("title", "应用详情");
+            context.startActivity(intent);
+        });
+        TextPaint mTVAppDescPaint = mTVAppDesc.getPaint();
+        mTVAppDescPaint.setFlags(Paint.UNDERLINE_TEXT_FLAG);  //下划线
+        mTVAppDescPaint.isAntiAlias();
+        mTVAppDescPaint.setAntiAlias(true);  //抗锯齿
     }
 
     @Override
@@ -151,14 +163,20 @@ public class DownloadApkConfirmDialog extends Dialog implements View.OnClickList
         Glide.with(context).load(apkInfo.iconUrl).into(mRIVIcon);
         mTVTitle.setText(apkInfo.appName);
         mTVDesc.setText("开发者：" + apkInfo.authorName);
-        mTVVersion.setText(apkInfo.versionName);
-        mTVSize.setText(readableFileSize(apkInfo.fileSize));
+        mTVVersion.setText("版本：" + apkInfo.versionName);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         mTVUpdate.setText("更新时间:" + sdf.format(new Date(apkInfo.apkPublishTime)));
-        mTVPrivate.setText("查看隐私条款");
+        String icpNumber = apkInfo.icpNumber;
+        if (TextUtils.isEmpty(icpNumber)) {
+            icpNumber = "未备案";
+        }
+        mTVSize.setText("大小：" + readableFileSize(apkInfo.fileSize));
+        mTVSize.append("\n备案号：" + icpNumber);
+        mTVSize.append("\n适用年龄：" + apkInfo.suitableAge);
+        mTVAppDesc.setTag(apkInfo.descriptionUrl);
         mTVPrivate.setTag(apkInfo.privacyAgreementUrl);
         for (String i : apkInfo.permissions) {
-            mTVContent.append("\t" + i + "\n");
+            mTVContent.append(i + "\n");
         }
     }
 

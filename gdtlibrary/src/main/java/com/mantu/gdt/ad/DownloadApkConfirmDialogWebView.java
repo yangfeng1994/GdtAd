@@ -59,7 +59,7 @@ public class DownloadApkConfirmDialogWebView extends Dialog implements View.OnCl
     }
 
     private void initView() {
-        setContentView(R.layout.download_confirm_dialog);
+        setContentView(R.layout.gdt_download_confirm_web_dialog);
         View root = findViewById(R.id.download_confirm_root);
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             root.setBackgroundResource(R.drawable.download_confirm_background_portrait);

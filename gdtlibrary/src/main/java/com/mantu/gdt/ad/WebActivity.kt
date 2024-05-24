@@ -6,7 +6,7 @@ import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import androidx.activity.ComponentActivity
-import com.mantu.gdt.ad.databinding.ActivityWebBinding
+import com.mantu.gdt.ad.databinding.ActivityGdtWebBinding
 import com.mantu.gdt.ad.web.QYWebView
 
 inline fun QYWebView.setOnQYWebViewCustomListener(
@@ -72,16 +72,17 @@ inline fun QYWebView.setOnQYWebViewCustomListener(
 class WebActivity : ComponentActivity() {
     val url by lazy { intent?.getStringExtra("url") ?: "" }
     val title by lazy { intent?.getStringExtra("title") ?: "" }
-    lateinit var binding: ActivityWebBinding
+    lateinit var binding: ActivityGdtWebBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityWebBinding.inflate(layoutInflater)
+        binding = ActivityGdtWebBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         initViews()
     }
 
     fun initViews() {
         binding.mWebView.loadUrl(url)
-        binding.tvTitle.setText(title)
+        binding.tvTitle.text = title
         binding.mWebView.setOnQYWebViewCustomListener(
             onPageStartLoad = { webView, url, favicon ->
                 binding.pbSchedule.visibility = View.VISIBLE
@@ -95,15 +96,26 @@ class WebActivity : ComponentActivity() {
                 binding.pbSchedule.visibility = View.GONE
             }
         )
+        binding.toolbarBack.setOnClickListener {
+            if (closeWeb()) {
+                finish()
+            }
+        }
+    }
+
+    private fun closeWeb(): Boolean {
+        if (binding.mWebView.canGoBack()) {
+            binding.mWebView.goBack()
+            return false
+        }
+        binding.mWebView.close()
+        return true
     }
 
     override fun onBackPressed() {
-        if (binding.mWebView.canGoBack()) {
-            binding.mWebView.goBack()
-            return
+        if (closeWeb()) {
+            super.onBackPressed()
         }
-        binding.mWebView.close()
-        super.onBackPressed()
     }
 
 

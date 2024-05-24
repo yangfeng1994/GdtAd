@@ -27,9 +27,9 @@ class SplashADView @JvmOverloads constructor(
 
 
     /**
-     * 中彦引擎的sdk
+     *
      */
-    fun loadAD(
+    open fun loadAD(
         postId: String,
         fetchDelay: Int = 4000,
         succeedInvoke: (Boolean) -> Unit

@@ -53,11 +53,10 @@ publishing {
 }
 
 dependencies {
-    implementation("com.makeramen:roundedimageview:2.3.0")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
-    implementation("com.qq.e.union:union:4.575.1445")
-    implementation("com.github.bumptech.glide:glide:4.11.0")
-    implementation(files("libs/meidiation-TTAdapter-5.8.1.3.aar"))
-    implementation(files("libs/meidiation-Util.aar"))
-    implementation(files("libs/open_ad_sdk_5.8.1.3.aar"))
+    api("com.qq.e.union:union:4.575.1445")
+    api("com.github.bumptech.glide:glide:4.11.0")
+    compileOnly(files("libs/meidiation-TTAdapter-5.8.1.3.aar"))
+    compileOnly(files("libs/meidiation-Util.aar"))
+    compileOnly(files("libs/open_ad_sdk_5.8.1.3.aar"))
 }
