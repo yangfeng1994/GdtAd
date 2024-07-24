@@ -1,6 +1,5 @@
 package com.mantu.edit.music
 
-import android.app.Application
 import androidx.multidex.MultiDexApplication
 import com.mantu.gdt.ad.DownloadConfirmHelper
 import com.mantu.gdt.ad.GdtUtils

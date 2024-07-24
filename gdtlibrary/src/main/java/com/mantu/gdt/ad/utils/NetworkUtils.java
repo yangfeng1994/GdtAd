@@ -48,7 +48,10 @@ public class NetworkUtils {
     private static NetworkInfo getActiveNetworkInfo() {
         ConnectivityManager cm = (ConnectivityManager) GdtUtils.INSTANCE.getApplication()
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo();
+        if (null != cm) {
+            return cm.getActiveNetworkInfo();
+        }
+        return null;
     }
 
     /**
@@ -58,6 +61,9 @@ public class NetworkUtils {
      * @return {@code true}: 是<br>{@code false}: 否
      */
     public static boolean isConnected() {
+        if (null == GdtUtils.INSTANCE.getApplication()) {
+            return false;
+        }
         NetworkInfo info = getActiveNetworkInfo();
         return info != null && info.isConnected();
     }

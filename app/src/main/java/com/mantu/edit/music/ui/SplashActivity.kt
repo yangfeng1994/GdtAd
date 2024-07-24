@@ -17,11 +17,9 @@ class SplashActivity : ComponentActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.mSplashAD.loadAD("", succeedInvoke = {
-            if (it) {
-                if (binding.mSplashAD.isClick) return@loadAD
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            }
+            if (binding.mSplashAD.isClick) return@loadAD
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
         })
     }
 

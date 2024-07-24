@@ -6,13 +6,18 @@
 
     <Button
         android:id="@+id/mInterstitial"
-        android:text="显示插屏广告"
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_height="50dp"
+        android:text="显示插屏广告" />
 
     <Button
         android:id="@+id/mRewordVideo"
-        android:text="显示激励视频广告"
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_height="50dp"
+        android:text="显示激励视频广告" />
+
+    <com.mantu.gdt.ad.BannerView
+        android:id="@+id/mBanner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

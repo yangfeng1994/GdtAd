@@ -78,7 +78,7 @@ class RewordVideoHelper {
 
             override fun onError(p0: AdError?) {
                 "RewordVideoHelper onNoAD ${p0?.errorCode}  ${p0?.errorMsg}".logI(TAG)
-                if (NetworkUtils.isConnected()) {
+                if (null == GdtUtils.application || NetworkUtils.isConnected()) {
                     isComplete = true
                     succeed(isComplete)
                 } else {
