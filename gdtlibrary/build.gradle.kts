@@ -54,9 +54,11 @@ publishing {
 
 dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
-    api("com.qq.e.union:union:4.575.1445")
+    api("com.qq.e.union:union:4.580.1450")
     api("com.github.bumptech.glide:glide:4.11.0")
-    compileOnly(files("libs/meidiation-TTAdapter-5.8.1.3.aar"))
-    compileOnly(files("libs/meidiation-Util.aar"))
-    compileOnly(files("libs/open_ad_sdk_5.8.1.3.aar"))
+    api("com.miui.zeus:mimo-ad-sdk:5.3.2")
+    implementation ("androidx.appcompat:appcompat:1.4.1")
+    implementation ("androidx.recyclerview:recyclerview:1.0.0")
+    implementation ("com.google.code.gson:gson:2.8.5")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.9.0")
 }

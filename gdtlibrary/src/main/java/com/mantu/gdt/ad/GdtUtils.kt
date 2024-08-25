@@ -1,8 +1,9 @@
 package com.mantu.gdt.ad
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
+import com.miui.zeus.mimo.sdk.BuildConfig
+import com.miui.zeus.mimo.sdk.MimoSdk
 import com.qq.e.comm.managers.GDTAdSdk
 import com.qq.e.comm.managers.GDTAdSdk.OnStartListener
 import com.qq.e.comm.managers.setting.GlobalSetting
@@ -30,13 +31,11 @@ object GdtUtils {
 
     //初始化
     fun init(
-        context: Application,
         appId: String,
         extraUserData: MutableMap<String, String> = HashMap(),
         callInvoke: (Boolean) -> Unit = {}
     ) {
-        this.application = context
-        GDTAdSdk.initWithoutStart(context, appId)
+        GDTAdSdk.initWithoutStart(application, appId)
         GlobalSetting.setExtraUserData(extraUserData)
         GDTAdSdk.start(object : OnStartListener {
             override fun onStartSuccess() {
@@ -48,6 +47,21 @@ object GdtUtils {
                 callInvoke(false)
             }
         })
+        application?.let { initMi(it) }
+    }
+
+    private fun initMi(context: Application) {
+        MimoSdk.init(context, object : MimoSdk.InitCallback {
+            override fun success() {
+
+            }
+
+            override fun fail(p0: Int, p1: String?) {
+
+            }
+
+        })
+        MimoSdk.setDebugOn(BuildConfig.DEBUG)
     }
 
     //设置渠道号

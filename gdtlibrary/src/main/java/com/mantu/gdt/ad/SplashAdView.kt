@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.mantu.gdt.ad.GdtUtils.TAG
 import com.mantu.gdt.ad.databinding.SplashAdViewBinding
+import com.mantu.gdt.ad.utils.RomUtils
+import com.miui.zeus.mimo.sdk.SplashAd
 import com.qq.e.ads.splash.SplashAD
 import com.qq.e.ads.splash.SplashADListener
 import com.qq.e.comm.util.AdError
@@ -15,6 +17,7 @@ class SplashADView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
     private var splashAD: SplashAD? = null
+    private var mMiSplashAD: SplashAd? = null
     var isClick = false
     var binding: SplashAdViewBinding
 
@@ -25,12 +28,9 @@ class SplashADView @JvmOverloads constructor(
         }
     }
 
-
-    /**
-     *
-     */
-    open fun loadAD(
+    fun loadAD(
         postId: String,
+        miId: String,
         fetchDelay: Int = 4000,
         succeedInvoke: (Boolean) -> Unit
     ) {
@@ -38,6 +38,63 @@ class SplashADView @JvmOverloads constructor(
             succeedInvoke(false)
             return
         }
+        if (RomUtils.checkIsMiuiRom()) {
+            "SplashADView xm loadMiAd".logI(TAG)
+            loadMiAd(postId, miId, fetchDelay, succeedInvoke)
+        } else {
+            "SplashADView xm loadGdtAD".logI(TAG)
+            loadGdtAD(postId, fetchDelay, succeedInvoke)
+        }
+    }
+
+    fun loadMiAd(
+        postId: String,
+        miId: String,
+        fetchDelay: Int = 4000,
+        succeedInvoke: (Boolean) -> Unit
+    ) {
+        mMiSplashAD = SplashAd()
+        mMiSplashAD?.loadAndShow(binding.mSplashContainer, miId, object :
+            SplashAd.SplashAdListener {
+            override fun onAdLoaded() {
+                "SplashADView xm onAdLoaded".logI(TAG)
+            }
+
+            override fun onAdLoadFailed(p0: Int, p1: String?) {
+                "SplashADView xm onAdLoadFailed $p0 $p1".logI(TAG)
+                loadGdtAD(postId, fetchDelay, succeedInvoke)
+            }
+
+            override fun onAdShow() {
+                "SplashADView xm onAdShow".logI(TAG)
+            }
+
+            override fun onAdClick() {
+                "SplashADView xm onAdClick".logI(TAG)
+                isClick = true
+            }
+
+            override fun onAdDismissed() {
+                "SplashADView xm onAdDismissed".logI(TAG)
+                mMiSplashAD?.destroy();
+                succeedInvoke(true)
+            }
+
+            override fun onAdRenderFailed() {
+                "SplashADView xm onAdRenderFailed".logI(TAG)
+            }
+        })
+    }
+
+
+    /**
+     *
+     */
+    open fun loadGdtAD(
+        postId: String,
+        fetchDelay: Int = 4000,
+        succeedInvoke: (Boolean) -> Unit
+    ) {
         splashAD = SplashAD(context, postId, object : SplashADListener {
             override fun onADDismissed() {
                 "SplashADView onADDismissed".logI(TAG)
