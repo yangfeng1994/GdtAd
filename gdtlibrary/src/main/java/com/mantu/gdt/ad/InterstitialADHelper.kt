@@ -83,6 +83,7 @@ class InterstitialADHelper {
 
             override fun onAdLoadFailed(errorCode: Int, errorMsg: String) {
                 "InterstitialADHelper xm onAdLoadFailed $errorCode $errorMsg ".logI(TAG)
+                destroy()
                 loadGdtAD(activity, postId)
                 // 请求加载失败
             }
@@ -104,6 +105,7 @@ class InterstitialADHelper {
 
                 override fun onNoAD(p0: AdError?) {
                     "InterstitialADHelper onNoAD ${p0?.errorCode}  ${p0?.errorMsg}".logI(TAG)
+                    destroy()
                 }
 
                 override fun onADOpened() {

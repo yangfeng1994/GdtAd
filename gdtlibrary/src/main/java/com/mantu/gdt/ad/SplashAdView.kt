@@ -62,6 +62,7 @@ class SplashADView @JvmOverloads constructor(
 
             override fun onAdLoadFailed(p0: Int, p1: String?) {
                 "SplashADView xm onAdLoadFailed $p0 $p1".logI(TAG)
+                destroy()
                 loadGdtAD(postId, fetchDelay, succeedInvoke)
             }
 
@@ -76,7 +77,7 @@ class SplashADView @JvmOverloads constructor(
 
             override fun onAdDismissed() {
                 "SplashADView xm onAdDismissed".logI(TAG)
-                mMiSplashAD?.destroy();
+                destroy()
                 succeedInvoke(true)
             }
 
@@ -133,6 +134,10 @@ class SplashADView @JvmOverloads constructor(
             }
         }, fetchDelay)
         splashAD?.fetchFullScreenAdOnly()
+    }
+
+    fun destroy() {
+        mMiSplashAD?.destroy()
     }
 
 }

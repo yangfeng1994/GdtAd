@@ -2,6 +2,7 @@ package com.mantu.gdt.ad
 
 import android.app.Application
 import android.util.Log
+import com.mantu.gdt.ad.utils.RomUtils
 import com.miui.zeus.mimo.sdk.BuildConfig
 import com.miui.zeus.mimo.sdk.MimoSdk
 import com.qq.e.comm.managers.GDTAdSdk
@@ -31,37 +32,82 @@ object GdtUtils {
 
     //初始化
     fun init(
+        context: Application,
         appId: String,
         extraUserData: MutableMap<String, String> = HashMap(),
         callInvoke: (Boolean) -> Unit = {}
     ) {
-        GDTAdSdk.initWithoutStart(application, appId)
+        this.application = context
+        if (RomUtils.checkIsMiuiRom()) {
+            initMi(context, appId, extraUserData, callInvoke)
+        } else {
+            initGdt(context, appId, extraUserData, callInvoke)
+        }
+    }
+
+    private fun initMi(
+        context: Application,
+        appId: String,
+        extraUserData: MutableMap<String, String> = HashMap(),
+        callInvoke: (Boolean) -> Unit = {}
+    ) {
+        MimoSdk.init(context, object : MimoSdk.InitCallback {
+            override fun success() {
+                "GdtUtils xm success".logI(TAG)
+                GDTAdSdk.initWithoutStart(context, appId)
+                GlobalSetting.setExtraUserData(extraUserData)
+                GDTAdSdk.start(object : OnStartListener {
+                    override fun onStartSuccess() {
+                        "GdtUtils xm Success gdt Success".logI(TAG)
+                        callInvoke(true)
+                    }
+
+                    override fun onStartFailed(e: Exception) {
+                        "GdtUtils xm Success gdt Failed ${e}".logI(TAG)
+                        callInvoke(true)
+                    }
+                })
+            }
+
+            override fun fail(p0: Int, p1: String?) {
+                GDTAdSdk.initWithoutStart(context, appId)
+                GlobalSetting.setExtraUserData(extraUserData)
+                GDTAdSdk.start(object : OnStartListener {
+                    override fun onStartSuccess() {
+                        "GdtUtils xm Failed $p0 $p1 gdt Success".logI(TAG)
+                        callInvoke(true)
+                    }
+
+                    override fun onStartFailed(e: Exception) {
+                        "GdtUtils xm Failed gdt Failed ${e}".logI(TAG)
+                        Log.e("gdt onStartFailed:", e.toString())
+                        callInvoke(false)
+                    }
+                })
+            }
+        })
+        MimoSdk.setDebugOn(BuildConfig.DEBUG)
+    }
+
+    private fun initGdt(
+        context: Application,
+        appId: String,
+        extraUserData: MutableMap<String, String> = HashMap(),
+        callInvoke: (Boolean) -> Unit = {}
+    ) {
+        GDTAdSdk.initWithoutStart(context, appId)
         GlobalSetting.setExtraUserData(extraUserData)
         GDTAdSdk.start(object : OnStartListener {
             override fun onStartSuccess() {
+                "GdtUtils gdt Success".logI(TAG)
                 callInvoke(true)
             }
 
             override fun onStartFailed(e: Exception) {
-                Log.e("gdt onStartFailed:", e.toString())
+                "GdtUtils gdt Success ${e}".logI(TAG)
                 callInvoke(false)
             }
         })
-        application?.let { initMi(it) }
-    }
-
-    private fun initMi(context: Application) {
-        MimoSdk.init(context, object : MimoSdk.InitCallback {
-            override fun success() {
-
-            }
-
-            override fun fail(p0: Int, p1: String?) {
-
-            }
-
-        })
-        MimoSdk.setDebugOn(BuildConfig.DEBUG)
     }
 
     //设置渠道号

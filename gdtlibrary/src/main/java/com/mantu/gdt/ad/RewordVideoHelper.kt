@@ -68,8 +68,8 @@ class RewordVideoHelper {
 
                     override fun onAdDismissed() {
                         "RewordVideoHelper xm onAdDismissed $isComplete".logI(TAG)
-                        succeed(isComplete)
                         destroy()
+                        succeed(isComplete)
                         // 广告消失
                     }
 
@@ -115,6 +115,7 @@ class RewordVideoHelper {
 
             override fun onAdLoadFailed(p0: Int, p1: String?) {
                 "RewordVideoHelper xm onAdLoadFailed $p0 $p1".logI(TAG)
+                destroy()
                 loadGDTAD(activity, rewordId, succeed, failed)
             }
         })
@@ -172,6 +173,7 @@ class RewordVideoHelper {
 
             override fun onADClose() {
                 "RewordVideoHelper onADClose $isComplete".logI(TAG)
+                destroy()
                 succeed(isComplete)
             }
 

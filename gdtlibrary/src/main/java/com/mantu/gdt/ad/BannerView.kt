@@ -60,6 +60,7 @@ class BannerView @JvmOverloads constructor(
 
                         override fun onAdDismiss() {
                             "BannerView xm onAdDismiss".logI(GdtUtils.TAG)
+                            destroy()
                             closeInvoke()
                         }
 
@@ -76,6 +77,7 @@ class BannerView @JvmOverloads constructor(
             //请求失败回调
             override fun onAdLoadFailed(errorCode: Int, errorMsg: String) {
                 "BannerView xm onAdLoadFailed $errorCode $errorMsg".logI(GdtUtils.TAG)
+                destroy()
                 loadGdtAd(activity, posID)
             }
         })
